@@ -86,10 +86,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="[[rootPath]]view1">View One</a>
-          <a name="view2" href="[[rootPath]]view2">View Two</a>
+          <a name="view1" href="[[rootPath]]to-do1">Wash Dishes</a>
+          <a name="view2" href="[[rootPath]]to-do2">Get Shopping</a>
           <a name="view3" href="[[rootPath]]view3">View Three</a>
-          <a name="view42" href="[[rootPath]]view42">View Fourty Number</a>
         </iron-selector>
       </app-drawer>
 
@@ -100,15 +99,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>To Do App</div>
+            <a name="view42" href="[[rootPath]]view42">View Fourty Number</a>
           </app-toolbar>
         </app-header>
+
+        <h1>Hello</h1>
+
+        <div>[[db.list.0.name]]</div>
 
         <iron-pages
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view1 name="view1"></my-view1>
+          <my-view1 db="{{db}}" name="view1"></my-view1>
           <my-view2 name="view2"></my-view2>
           <my-view3 name="view3"></my-view3>
           <my-view42 name="view42"></my-view42>
@@ -138,6 +142,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+
+          db: {
+            type: Object,
+            value: function() {
+              return {
+                list: [{
+                  name: 'List 1',
+                  tasks: [{
+                    name: 'task 1',
+                    complete: false
+                  }]
+                },{
+                  name: 'List 2',
+                  tasks: [{
+                    name: 'task 2',
+                    complete: false
+                  }, {
+                    name: 'task 3',
+                    complete: false
+                  }, {
+                    name: 'task 4',
+                    complete: false
+                  }]
+                } ]
+              }
+            }
+          }
         };
       }
 
@@ -151,7 +182,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log('ha\'ppy', page);
         // If no page was found in the route data, page will be an empty string.
         // Default to 'view1' in that case.
-        this.page = page || 'view1';
+        this.page = page || 'to-do1';
 
         // Close a non-persistent drawer when the page & route are changed.
         if (!this.$.drawer.persistent) {
